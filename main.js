@@ -3,6 +3,10 @@ var cxActors = canvasActors.getContext("2d");
 var game;
 var lastTime;
 
+window.addEventListener("click", function() {
+	console.log(event.pageX - canvasActors.offsetLeft + canvasActors.offsetWidth / 2, event.pageY - canvasActors.offsetTop + canvasActors.offsetHeight / 2);
+});
+
 function Game() {
 	this.player = new Player(
 		config.playerSize,
@@ -36,13 +40,15 @@ Game.prototype.update = function (timeDiff) {
 		this.enemies.push(enemy);
 	}
 	this.enemies.forEach(function (enemy, i) {
-		if (this.player.position.y + this.player.size > enemy.position.y && this.player.position.y < enemy.position.y + enemy.height) {
-			if (this.player.position.x + this.player.size > enemy.position.x && this.player.position.x < enemy.position.x + enemy.width)
+		if (this.player.position.y + this.player.size >= enemy.position.y && this.player.position.y <= enemy.position.y + enemy.height) {
+			if (this.player.position.x + this.player.size >= enemy.position.x && this.player.position.x <= enemy.position.x + enemy.width) {
+				console.log("player", this.player.position.x, this.player.position.y, this.player.size);
+				console.log("enemy", enemy.position.x, enemy.position.y, enemy.width, enemy.height);
 				this.victorious = "lost";
+			}
 		}
 		if (enemy.position.x + enemy.width <= 0)
 			toDelete.push(i);
-			//this.enemies.splice(i, 1);
 		else
 			enemy.position.x -= config.xVel * t;
 	}, this);
@@ -58,7 +64,6 @@ Game.prototype.update = function (timeDiff) {
 	this.player.collideCheck(this.gravDir, this.gravChange);
 	this.player.position.add(Vector.mult(this.player.velocity, t));
 	this.gravChange = false;
-	console.log(this.player.velocity.y);
 }
 
 Game.prototype.render = function () {
@@ -99,7 +104,7 @@ Game.prototype.stopEvents = function () {
 
 function mainLoop(curTime) {
 	if (game.victorious != "indeterminate") {
-		if (game.victorious = "lost") {
+		if (game.victorious == "lost") {
 			console.log("noob");
 			game.stopEvents();
 			return;

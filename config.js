@@ -4,9 +4,9 @@ var Screen = {
 }
 
 var config = {
-	"playerSize": 50,
+	"playerSize": 30,
 	"enemyBlockHeight": 200,
-	"enemyBlockWidth": 50,
+	"enemyBlockWidth": 30,
 	"enemyGenDist": 650,
 	"xVel": 3,
 	"accelMag": 0.03
